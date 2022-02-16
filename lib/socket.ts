@@ -417,7 +417,7 @@ export class Socket<
    * @param {Packet} packet - packet object
    * @private
    */
-  private onevent(packet: Packet): void {
+  private async onevent(packet: Packet): Promise<void> {
     const args = packet.data || [];
     debug("emitting event %j", args);
 
@@ -429,7 +429,7 @@ export class Socket<
     if (this._anyListeners && this._anyListeners.length) {
       const listeners = this._anyListeners.slice();
       for (const listener of listeners) {
-        listener.apply(this, args);
+        await listener.apply(this, args);
       }
     }
     this.dispatch(args);
